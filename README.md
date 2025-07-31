@@ -39,7 +39,7 @@ An AI-powered research assistant for the **Institute of Technology of Cambodia (
 
 - Python 3.8+
 - Google Gemini API Key
-- 4GB+ RAM (for embeddings)
+
 
 ### Installation
 
@@ -224,7 +224,7 @@ fetch('/clear_history', {method: 'POST'})
 ### Environment Variables (.env)
 ```bash
 GEMINI_API_KEY=your_gemini_api_key_here
-GEMINI_MODEL_NAME=gemini-1.5-flash
+GEMINI_MODEL_NAME=gemini-2.5-flash
 FLASK_SECRET_KEY=your_secret_key_here
 ```
 
@@ -342,33 +342,6 @@ def _sanitize_content(self, content: str) -> str:
 - **Database**: SQLite (chat history)
 - **Security**: Custom pattern matching + logging
 
-## Development Roadmap
-
-- [ ] Advanced search filters
-- [ ] Mobile app development
-- [ ] Additional language support
-- [ ] Analytics dashboard
-- [ ] API documentation
-- [ ] A/B testing framework
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Support
-
-For questions and support:
-- Email: support@itc.edu.kh
-- Documentation: [Wiki](https://github.com/yourusername/itc-ams-search-engine/wiki)
-- Issues: [GitHub Issues](https://github.com/yourusername/itc-ams-search-engine/issues)
 
 ## Acknowledgments
 
