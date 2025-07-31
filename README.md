@@ -45,10 +45,9 @@ An AI-powered research assistant for the **Institute of Technology of Cambodia (
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/itc-ams-search-engine.git
-   cd itc-ams-search-engine
+   git clone https://github.com/sreypich999/itc-ams-web-search.git
+   cd itc-ams-web-search
    ```
-
 2. **Install dependencies**
    ```bash
    pip install -r requirements.txt
