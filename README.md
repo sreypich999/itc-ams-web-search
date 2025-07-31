@@ -234,7 +234,7 @@ FLASK_SECRET_KEY=your_secret_key_here
 llm_services:
   gemini:
     api_key: "GEMINI_API_KEY"
-    model: "gemini-1.5-flash"
+    model: "gemini-2.5-flash"
 
 # Domain Filters - Define your knowledge sources
 domain_filters:
