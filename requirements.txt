@@ -1,8 +1,12 @@
+# Force compatible versions
+greenlet==3.0.3                    # Critical: Fixes Python 3.12 C-level errors
+chromadb>=0.50.0                   # Modern version, avoids old clickhouse-driver
+
+# Your other packages (most are fine)
 flask==3.0.2
 python-dotenv==1.0.1
 pyyaml==6.0.1
 google-generativeai==0.5.0
-chromadb==0.4.24
 sentence-transformers==2.5.1
 beautifulsoup4==4.12.3
 playwright==1.44.0
@@ -10,3 +14,6 @@ requests==2.31.0
 deep-translator==1.11.4
 langchain-core==0.1.42
 langgraph==0.0.35
+
+# Optional: if you use embeddings or vector DBs
+hnswlib>=0.8.0
