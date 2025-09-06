@@ -11,10 +11,14 @@ An AI-powered research assistant for the **Institute of Technology of Cambodia (
 - **Multilingual Support**: English and Khmer language processing
 - **Persistent Chat**: Session-based conversation history
 - **Responsive UI**: Modern web interface with real-time interactions
-[![Watch demo](./poster.png)](https://github.com/sreypich999/itc-ams-web-search/releases/tag/v1.0-demo)
 
 
 
+<video autoplay muted loop playsinline controls width="720">
+  <source src="https://raw.githubusercontent.com/sreypich999/itc-ams-web-search/main/Recording_2025-07-29_174810.mp4" type="video/mp4">
+  Your browser does not support the video tag. 
+  <a href="https://github.com/sreypich999/itc-ams-web-search/releases">Download the demo</a>.
+</video>
 
 
 
@@ -362,6 +366,7 @@ def _sanitize_content(self, content: str) -> str:
 ---
 
 **Built with ❤️ for the ITC/AMS community**
+
 
 
 
