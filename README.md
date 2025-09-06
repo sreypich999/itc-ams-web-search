@@ -13,10 +13,10 @@ An AI-powered research assistant for the **Institute of Technology of Cambodia (
 - **Responsive UI**: Modern web interface with real-time interactions
 
 
-<video controls width="640">
-  <source src="https://raw.githubusercontent.com/sreypich999/itc-ams-web-search/main/Recording%202025-07-29%20174810.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+[![Watch the demo](./poster.png)](https://github.com/sreypich999/itc-ams-web-search/blob/main/Recording%202025-07-29%20174810.mp4)
+
+Click the image to view/download the demo video.
+
 
 
 
@@ -40,6 +40,9 @@ An AI-powered research assistant for the **Institute of Technology of Cambodia (
                                                │   (ChromaDB)    │
                                                └─────────────────┘
 ```
+
+
+
 
 ## Quick Start
 
@@ -361,4 +364,5 @@ def _sanitize_content(self, content: str) -> str:
 ---
 
 **Built with ❤️ for the ITC/AMS community**
+
 
