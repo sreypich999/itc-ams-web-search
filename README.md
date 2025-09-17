@@ -42,134 +42,40 @@ An AI-powered research assistant for the **Institute of Technology of Cambodia (
                                                │   (ChromaDB)    │
                                                └─────────────────┘
 ```
+# 🤖 AI-Powered Knowledge Base Chatbot
 
+This project creates a smart chatbot that answers questions **only** by using a pre-approved set of websites. It's a "no-hallucination" system designed to be accurate and reliable.
 
+The system works in two main parts:
 
-Phase 1: Building the Knowledge Base (The "Scraping" Part)
-This phase happens first, usually by running python scripts/initial_data_ingestion.py.
+---
 
-Step 1: Load Configuration
+### Phase 1: Building the Knowledge Base 🏗️
 
-The script starts by reading config/api_keys.yaml.
+This is where the bot learns. We scrape and organize information from trusted sources.
 
-It extracts the list of whitelisted domains under domain_filters -> itc and domain_filters -> ams.
+-   **Load Config**: The process starts by reading `config/api_keys.yaml` to find the list of allowed websites (e.g., `itc.edu.kh`).
+-   **Scrape Content**: The system visits each website, strips out ads and navigation, and grabs the important text. It even follows internal links to collect more info.
+-   **Chunking**: The text is broken into small, manageable pieces. Each piece is 500 words long with a 50-word overlap to keep context.
+-   **Embeddings**: Each text chunk is turned into a **vector** (a list of numbers) using the **all-MiniLM-L6-v2** model. This vector represents the meaning of the text.
+-   **Store Data**: The vectors, original text, and source URL are all saved in a **ChromaDB** database.
 
-Example: https://itc.edu.kh/**, https://en.wikipedia.org/wiki/Institute_of_Technology_of_Cambodia, etc.
+> **Result of Phase 1**: We have a powerful, searchable library of information, ready for the bot to use.
 
-Step 2: Initialize Components
+---
 
-The DocumentProcessor is initialized (with chunk_size=500, chunk_overlap=50).
+### Phase 2: Answering a User Query 💬
 
-The Embedder is created using the all-MiniLM-L6-v2 model.
+This is what happens when a user asks a question.
 
-The ChromaDB vector database is initialized, connected to the folder ./data/chroma_db.
+1.  **User Question**: A user types a question (e.g., "What are the admission requirements?").
+2.  **Security Check**: The system first checks for any hacking attempts or malicious phrases. If it's safe, it continues.
+3.  **Find Context**: It looks at the past 10 messages from the conversation to understand what the user is talking about.
+4.  **Semantic Search**: The user's question is also turned into a **vector**. The system quickly searches the **ChromaDB** to find the 25 most similar text chunks.
+5.  **Synthesize Answer**: The Gemini AI model is given the user's question, the conversation history, and the relevant text chunks. **Crucially, the AI is instructed to only use this information to create the answer.**
+6.  **Deliver Answer**: The AI's answer is formatted as a JSON response and sent back to the user's browser. The browser displays the answer beautifully, with sources and formatting.
 
-Step 3: Scrape Content from Each URL
-
-For each URL in the whitelist, the scrape_and_extract_content() method (document_processor.py) is called.
-
-It uses the requests library with a custom User-Agent to fetch the HTML content.
-
-It uses BeautifulSoup to parse the HTML.
-
-It cleans the HTML by removing unwanted tags: ['script', 'style', 'header', 'footer', 'nav', 'aside', '.sidebar', '.ad-block']. This strips out navigation, ads, and scripts, leaving only the main content.
-
-It extracts text from relevant tags: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li', 'td'].
-
-It follows links within the same domain (up to a max_depth of 2) to get more content, but only if they are relevant (e.g., it avoids links to PDFs, images, or login pages).
-
-Step 4: Chunk the Text
-
-The large amount of scraped text is too big for the AI model to handle at once.
-
-The chunk_text() method splits the clean text into smaller segments.
-
-Chunking Strategy: It splits by words (not characters). Each chunk is 500 words long, with an overlap of 50 words between chunks. This overlap is crucial to prevent losing the context of an idea that might be split between two chunks.
-
-Each chunk is also given metadata (the source URL and the time it was ingested).
-
-Step 5: Generate Embeddings and Store
-
-Each text chunk is passed to the Embedder.
-
-The SentenceTransformer model (all-MiniLM-L6-v2) converts the text chunk into a vector (a list of 384 numbers). This vector is a numerical representation of the chunk's semantic meaning.
-
-The vector, the original text, and its metadata are stored together in the ChromaDB vector database.
-
-The process repeats for every chunk from every URL.
-
-Final Result of Phase 1: A powerful, searchable knowledge base where every piece of ITC/AMS information is stored as a vector, ready for semantic search.
-
-Phase 2: Answering a User Query (The "Search" Part)
-This phase starts when a user types a question into the web interface and hits enter. The diagram above shows how the two phases connect: the stored knowledge base is used to answer the user's query.
-
-Step 1: The User Asks a Question
-
-The user types a question (e.g., "What are the admission requirements?") in the web browser.
-
-The browser sends this question to the Flask server (app.py) via a POST /search request.
-
-Step 2: Security & Validation Check
-
-The Flask server immediately runs the user's query through a security function (_is_malicious_query()).
-
-It checks for patterns that indicate hacking attempts, prompts for system information, or injection attacks (e.g., words like system, database, export, password, special characters like ; or |).
-
-If detected, it immediately blocks the query and returns a security error. If it passes, processing continues.
-
-Step 3: Context and History Retrieval
-
-The server checks the user's session cookie for a session_id.
-
-It asks the ChatMemory class to retrieve the last 10 messages from the SQLite database for that session. This provides the conversation context (e.g., if the user's previous question was "What programs does ITC offer?", and the follow-up is "What are the admission requirements?", the AI knows "requirements" refers to "programs").
-
-Step 4: Query Expansion (Optional)
-
-The QueryExpander can be used to enhance the query.
-
-It translates the query into English and Khmer to find relevant content in both languages.
-
-It uses the synonyms.yaml file to generate variations of the query (e.g., "admission" -> "enrollment", "registration").
-
-Step 5: Semantic Search
-
-The expanded query is sent to the KnowledgeBaseTool.
-
-The tool takes the query and converts it into a vector using the same Embedder from Phase 1.
-
-This query vector is then sent to ChromaDB with the instruction: "Find the 25 text chunks in the database whose vectors are most similar (closest) to this query vector."
-
-ChromaDB performs this lightning-fast mathematical comparison and returns the top results, along with their text, source URL, and a similarity score.
-
-Step 6: Response Synthesis by the LLM
-
-The LangGraph agent now has the user's original question, the conversation history, and the most relevant text chunks from the knowledge base.
-
-It constructs a detailed prompt for the Gemini AI model. The prompt includes:
-
-System Instructions: The strict rules from _create_agent_prompt() (only use knowledge base, never make up information, strict formatting rules).
-
-Conversation History: The last few messages.
-
-Retrieved Context: The text chunks found by the KnowledgeBaseTool.
-
-User's Question: The original query.
-
-The Gemini model is instructed to synthesize an answer based only on the provided context. It is forbidden from using its own knowledge.
-
-It formats the answer into the strict JSON structure with answer, summary, details, list_items, and sources.
-
-Step 7: Delivery and Display
-
-The Flask server receives this JSON response from the agent.
-
-It stores both the user's question and the AI's answer in the SQLite conversation history.
-
-It sends the JSON response back to the user's web browser.
-
-The browser's JavaScript renders the answer: it uses marked.js to convert the Markdown into beautiful HTML, displays the bullet points, and formats the source links.
-
-Final Result for the User: A comprehensive, well-structured, and sourced answer to their question, derived entirely from the official ITC/AMS knowledge base, delivered in a clean and engaging chat interface.
+> **Result for the User**: A clear, well-structured, and sourced answer that comes only from the official knowledge base.
 
 
 
@@ -494,6 +400,7 @@ def _sanitize_content(self, content: str) -> str:
 ---
 
 **Built with ❤️ for the ITC/AMS community**
+
 
 
 
