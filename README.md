@@ -41,13 +41,14 @@ An AI-powered research assistant for the **Institute of Technology of Cambodia (
                                                │   Vector DB     │
                                                │   (ChromaDB)    │
                                                └─────────────────┘
-```# 🤖 AI-Powered Knowledge Base Chatbot
+```
+# 🤖 AI-Powered Knowledge Base Chatbot
 
 This project creates a smart chatbot that answers questions **only** by using a pre-approved set of websites. It's a "no-hallucination" system designed to be accurate and reliable.
 
 This diagram illustrates the full process, from building the knowledge base to answering a user's question.
 
-![Diagram of the chatbot system architecture showing the two phases: Knowledge Base Construction and User Query Processing.](photo_2025-09-17_21-53-47.jpg)
+![Diagram of the chatbot system architecture showing the two phases: Knowledge Base Construction and User Query Processing.](https://raw.githubusercontent.com/sreypich999/itc-ams-web-search/main/photo_2025-09-17_21-53-47.jpg)
 
 The system works in two main parts:
 
@@ -402,6 +403,7 @@ def _sanitize_content(self, content: str) -> str:
 ---
 
 **Built with ❤️ for the ITC/AMS community**
+
 
 
 
