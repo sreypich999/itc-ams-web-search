@@ -43,41 +43,6 @@ An AI-powered research assistant for the **Institute of Technology of Cambodia (
                                                └─────────────────┘
 ```
 
-flowchart TD
-    subgraph FirstPhase [Phase 1: Knowledge Base Construction]
-        direction TB
-        P1A[Load Approved URLs<br>from api_keys.yaml]
-        P1B[Scrape Web Content<br>BeautifulSoup]
-        P1C[Clean & Extract Text<br>Remove scripts, styles]
-        P1D[Chunk Text<br>500-word segments]
-        P1E[Generate Embeddings<br>SentenceTransformer]
-        P1F[Store in Vector DB<br>ChromaDB]
-        
-        P1A --> P1B --> P1C --> P1D --> P1E --> P1F
-    end
-
-    subgraph SecondPhase [Phase 2: User Query Processing]
-        direction TB
-        P2A[User Asks Question]
-        P2B[Security Validation]
-        P2C[Query Expansion<br>Synonyms & Translation]
-        P2D[Semantic Search<br>Find similar vectors]
-        P2E[Retrieve Relevant<br>Text Chunks]
-        P2F[Generate Prompt with<br>Context & History]
-        P2G[LLM Synthesizes<br>Answer from Context]
-        P2H[Format Response]
-        P2I[Display to User]
-        
-        P2A --> P2B --> P2C --> P2D --> P2E --> P2F --> P2G --> P2H --> P2I
-    end
-
-    P1F -.-> P2D
-
-    classDef phase1 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
-    classDef phase2 fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    
-    class FirstPhase phase1;
-    class SecondPhase phase2;
 
 
 
@@ -401,6 +366,7 @@ def _sanitize_content(self, content: str) -> str:
 ---
 
 **Built with ❤️ for the ITC/AMS community**
+
 
 
 
