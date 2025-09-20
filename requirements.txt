@@ -1,3 +1,5 @@
+python-3.12.9
+
 # Core fix for build error
 greenlet==3.0.3
 
@@ -21,5 +23,6 @@ playwright==1.44.0
 requests==2.31.0
 
 # LangChain ecosystem
+langchain==0.1.20  # <-- THIS LINE WAS MISSING
 langchain-core==0.1.42
 langgraph==0.0.35
