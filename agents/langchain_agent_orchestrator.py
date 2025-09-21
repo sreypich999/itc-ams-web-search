@@ -7,7 +7,7 @@ from typing import List, Dict, Any, Union, TypedDict, Optional, Tuple
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 from langchain_core.tools import Tool
-from langchain.agents.format_scratchpad import format_to_openai_function_messages
+from langchain_core.agents import format_to_openai_function_messages
 from langchain.agents.output_parsers import OpenAIFunctionsAgentOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langgraph.graph import StateGraph, END
@@ -466,4 +466,5 @@ class LangChainAgentOrchestrator:
                 "details": f"Detailed error: {str(e)}",
                 "list_items": [],
                 "sources": []
+
             }
